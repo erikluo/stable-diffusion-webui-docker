@@ -19,8 +19,8 @@ FROM pytorch/pytorch:2.1.2-cuda12.1-cudnn8-runtime
 
 ENV DEBIAN_FRONTEND=noninteractive PIP_PREFER_BINARY=1
 
-RUN --mount=type=cache,target=/var/cache/apt \
-  apt-get update && \
+#RUN --mount=type=cache,target=/var/cache/apt \
+RUN  apt-get update && \
   # we need those
   apt-get install -y fonts-dejavu-core rsync git jq moreutils aria2 \
   # extensions needs those
@@ -28,8 +28,8 @@ RUN --mount=type=cache,target=/var/cache/apt \
 
 
 WORKDIR /
-RUN --mount=type=cache,target=/root/.cache/pip \
-  git clone https://github.com/AUTOMATIC1111/stable-diffusion-webui.git && \
+#RUN --mount=type=cache,target=/root/.cache/pip \
+RUN  git clone https://github.com/AUTOMATIC1111/stable-diffusion-webui.git && \
   cd stable-diffusion-webui && \
   git reset --hard cf2772fab0af5573da775e7437e6acdca424f26e && \
   pip install -r requirements_versions.txt
@@ -39,11 +39,11 @@ ENV ROOT=/stable-diffusion-webui
 
 COPY --from=download /repositories/ ${ROOT}/repositories/
 RUN mkdir ${ROOT}/interrogate && cp ${ROOT}/repositories/clip-interrogator/clip_interrogator/data/* ${ROOT}/interrogate
-RUN --mount=type=cache,target=/root/.cache/pip \
-  pip install -r ${ROOT}/repositories/CodeFormer/requirements.txt
+#RUN --mount=type=cache,target=/root/.cache/pip \
+RUN  pip install -r ${ROOT}/repositories/CodeFormer/requirements.txt
 
-RUN --mount=type=cache,target=/root/.cache/pip \
-  pip install pyngrok xformers \
+#RUN --mount=type=cache,target=/root/.cache/pip \
+RUN  pip install pyngrok xformers \
   git+https://github.com/TencentARC/GFPGAN.git@8d2447a2d918f8eba5a4a01463fd48e45126a379 \
   git+https://github.com/openai/CLIP.git@d50d76daa670286dd6cacf3bcd80b5e4823fc8e1 \
   git+https://github.com/mlfoundations/open_clip.git@v2.20.0
